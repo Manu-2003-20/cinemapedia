@@ -6,5 +6,3 @@ import 'package:cinemapedia/infrastructure/repositories/movie_repository_impl.da
 final movieRepositoryProvider = Provider((ref) {
   return MovieRepositoryImpl( MoviedbDatasource() );
 });
-
-
