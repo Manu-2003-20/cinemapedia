@@ -6,7 +6,8 @@ class MovieRepositoryImpl extends MoviesRepository {
   final MoviesDatasource datasource;
   MovieRepositoryImpl(this.datasource);
 
-  get searchMovies => null;
+  //Estaba creando este parametro nulo
+  //!get searchMovies => null;
 
   @override
   Future<List<Movie>> getNowPlaying({int page = 1}) {

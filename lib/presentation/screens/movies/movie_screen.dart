@@ -10,6 +10,7 @@ import 'package:cinemapedia/presentation/providers/movies/movie_info_provider.da
 class MovieScreen extends ConsumerStatefulWidget {
   static const name = 'movie-screen';
 
+
   final String movieId;
 
   const MovieScreen({super.key, required this.movieId});
@@ -36,7 +37,7 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
       return const Scaffold(
           body: Center(
         child: CircularProgressIndicator(
-          strokeWidth: 2,
+          strokeWidth: 2, 
         ),
       ));
     }
