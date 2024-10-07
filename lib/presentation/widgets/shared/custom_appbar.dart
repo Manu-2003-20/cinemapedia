@@ -57,36 +57,52 @@ class CustomAppbar extends ConsumerWidget {
                               .searchMoviesByQuery,
                         )).then((movie) {
                       if (movie == null) return;
-                      context.push('/movie/${movie.id}');
+                      context.push('/home/0/movie/${movie.id}');
                     });
                   },
                   icon: const Icon(Icons.search)),
               const SizedBox(width: 5),
               // Botón de cambio de tema
-              FadeInDown(
-                key: ValueKey(themeMode),
-                child: IconButton(
-                  onPressed: () {
-                    // Cambiamos entre tema claro y oscuro
-
-                    ref.read(themeModeProvider.notifier).update((state) {
-                      return state == ThemeMode.light
-                          ? ThemeMode.dark
-                          : ThemeMode.light;
-                    });
-                  },
-                  icon: Icon(
-                    themeMode == ThemeMode.light
-                        ? Icons.dark_mode
-                        : Icons.light_mode,
-                    color: colors.primary,
-                  ),
-                ),
-              ),
+              _thememode(themeMode: themeMode, colors: colors),
             ],
           ),
         ),
       )),
+    );
+  }
+}
+
+// ignore: camel_case_types
+class _thememode extends ConsumerWidget {
+  const _thememode({
+    required this.themeMode,
+    required this.colors,
+  });
+
+  final ThemeMode themeMode;
+  final ColorScheme colors;
+
+  @override
+  Widget build(BuildContext context,ref) {
+    return FadeInDown(
+      key: ValueKey(themeMode),
+      child: IconButton(
+        onPressed: () {
+          // Cambiamos entre tema claro y oscuro
+    
+          ref.read(themeModeProvider.notifier).update((state) {
+            return state == ThemeMode.light
+                ? ThemeMode.dark
+                : ThemeMode.light;
+          });
+        },
+        icon: Icon(
+          themeMode == ThemeMode.light
+              ? Icons.dark_mode
+              : Icons.light_mode,
+          color: colors.primary,
+        ),
+      ),
     );
   }
 }

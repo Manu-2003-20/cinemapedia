@@ -61,11 +61,12 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
                         onPressed: () => query = '',
                         icon: const Icon(Icons.refresh_rounded)));
               }
-                        
+
               return FadeIn(
-                animate: query.isNotEmpty,
+                  animate: query.isNotEmpty,
                   child: IconButton(
-                      onPressed: () => query = '', icon: const Icon(Icons.clear)));
+                      onPressed: () => query = '',
+                      icon: const Icon(Icons.clear)));
             }),
       ];
     }
@@ -136,10 +137,14 @@ class _MovieItem extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      movie.posterPath,
-                      loadingBuilder: (context, child, loadingProgress) =>
-                          FadeIn(child: child),
+                    child: FadeInImage(
+                      height: 130,
+                      fit: BoxFit.cover,
+                      placeholder: const AssetImage(
+                          'assets/Reasons-Why-Images-Not-Loading-on-Your-Website-2.gif'),
+                      image: NetworkImage(
+                        movie.posterPath,
+                      ),
                     ),
                   ),
                 ],

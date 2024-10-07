@@ -22,14 +22,14 @@ class CustomBottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      fixedColor: const Color.fromARGB(255, 0, 229, 255),
+        fixedColor: const Color.fromARGB(255, 0, 229, 255),
         elevation: 0,
         onTap: (value) => onItemTapped(context, value),
         currentIndex: currentIndex,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home_max), label: 'Inicio'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.label_outline), label: 'Categorías'),
+              icon: Icon(Icons.thumbs_up_down_outlined), label: 'Populares'),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite_border_rounded),
             label: 'Favoritos',

@@ -91,31 +91,19 @@ class _Slide extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 143,
+           SizedBox(
+            width: 150,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: Image.network(
-                movie.posterPath,
-                fit: BoxFit.cover,
-                width: 150,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress != null) {
-                    return const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ),
-                      ),
-                    );
-                  }
-
-                  return GestureDetector(
-                    //ahora partimos del home, antes era del (/)
-                    onTap: () => context.push('/home/0/movie/${movie.id}'),
-                    child: FadeIn(child: child),);
-                },
+              child: GestureDetector(
+                onTap: () => context.push('/home/0/movie/${ movie.id }'),
+                child: FadeInImage(
+                  height: 200,
+                  fit: BoxFit.cover,
+                  
+                  placeholder: const AssetImage('assets/Reasons-Why-Images-Not-Loading-on-Your-Website-2.gif'),
+                  image: NetworkImage(movie.posterPath)
+                ),
               ),
             ),
           ),
@@ -145,7 +133,7 @@ class _Slide extends StatelessWidget {
                   width: 3,
                 ),
                 Text(
-                  '${movie.voteAverage}',
+                  HumansFormats.number(movie.voteAverage, 1),
                   style: textStyle.bodyMedium
                       ?.copyWith(color: Colors.yellow.shade800),
                 ),
@@ -176,10 +164,8 @@ class _Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final titleStyle = Theme.of(context).textTheme.titleLarge;
-    //final subTitleStyle = Theme.of(context).textTheme.titleLarge;
 
     return Container(
-      ///padding: const EdgeInsets.only(top: 10),
       margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
       child: Row(
         children: [
