@@ -42,7 +42,8 @@ class CustomAppbar extends ConsumerWidget {
               // Botón de búsqueda
               IconButton(
                   onPressed: () {
-                    final searchMovies = ref.watch(searchedMoviesProvider);
+                    // ignore: unused_local_variable
+                    final searchMovies = ref.read(searchedMoviesProvider);
                     //final movieRepository = ref.read(movieRepositoryProvider);
                     final searchQuery = ref.read(searchQueryProvider);
 
@@ -50,39 +51,58 @@ class CustomAppbar extends ConsumerWidget {
                         query: searchQuery,
                         context: context,
                         delegate: SearchMovieDelegate(
-                          searchMovies: ref.read(searchedMoviesProvider.notifier).searchMoviesByQuery
+                          initialMovies: searchMovies,
+                          searchMovies: ref
+                              .read(searchedMoviesProvider.notifier)
+                              .searchMoviesByQuery,
                         )).then((movie) {
                       if (movie == null) return;
-                      context.push('/movie/${movie.id}');
+                      context.push('/home/0/movie/${movie.id}');
                     });
                   },
                   icon: const Icon(Icons.search)),
               const SizedBox(width: 5),
               // Botón de cambio de tema
-              FadeInDown(
-                key: ValueKey(themeMode),
-                child: IconButton(
-                  onPressed: () {
-                    // Cambiamos entre tema claro y oscuro
-
-                    ref.read(themeModeProvider.notifier).update((state) {
-                      return state == ThemeMode.light
-                          ? ThemeMode.dark
-                          : ThemeMode.light;
-                    });
-                  },
-                  icon: Icon(
-                    themeMode == ThemeMode.light
-                        ? Icons.dark_mode
-                        : Icons.light_mode,
-                    color: colors.primary,
-                  ),
-                ),
-              ),
+              _thememode(themeMode: themeMode, colors: colors),
             ],
           ),
         ),
       )),
+    );
+  }
+}
+
+// ignore: camel_case_types
+class _thememode extends ConsumerWidget {
+  const _thememode({
+    required this.themeMode,
+    required this.colors,
+  });
+
+  final ThemeMode themeMode;
+  final ColorScheme colors;
+
+  @override
+  Widget build(BuildContext context,ref) {
+    return FadeInDown(
+      key: ValueKey(themeMode),
+      child: IconButton(
+        onPressed: () {
+          // Cambiamos entre tema claro y oscuro
+    
+          ref.read(themeModeProvider.notifier).update((state) {
+            return state == ThemeMode.light
+                ? ThemeMode.dark
+                : ThemeMode.light;
+          });
+        },
+        icon: Icon(
+          themeMode == ThemeMode.light
+              ? Icons.dark_mode
+              : Icons.light_mode,
+          color: colors.primary,
+        ),
+      ),
     );
   }
 }

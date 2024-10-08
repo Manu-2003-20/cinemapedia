@@ -1,102 +1,68 @@
-import 'package:cinemapedia/presentation/providers/providers.dart';
+import 'package:cinemapedia/presentation/views/movies/populares_views.dart';
 import 'package:flutter/material.dart';
+
 import 'package:cinemapedia/presentation/widgets/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cinemapedia/presentation/views/views.dart';
 
-
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const name = 'home-screen';
+  final int pageIndex;
 
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: _HomeView(),
-      bottomNavigationBar: CustomBottomNavigation(),
-    );
-  }
-}
-
-class _HomeView extends ConsumerStatefulWidget {
-  const _HomeView();
+  const HomeScreen({super.key, required this.pageIndex});
 
   @override
-  _HomeViewState createState() => _HomeViewState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeViewState extends ConsumerState<_HomeView> {
+//* Este Mixin es necesario para mantener el estado en el PageView
+class _HomeScreenState extends State<HomeScreen>
+    with AutomaticKeepAliveClientMixin {
+  late PageController pageController;
+
   @override
   void initState() {
     super.initState();
-
-    ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-    ref.read(popularMoviesProvider.notifier).loadNextPage();
-    ref.read(upComingMoviesProvider.notifier).loadNextPage();
-    ref.read(topRatedMoviesProvider.notifier).loadNextPage();
+    pageController = PageController(keepPage: true);
   }
 
   @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  final viewRoutes = const <Widget>[
+    HomeView(),
+    PopularView(), // <--- categorias View
+    FavoritesViews(),
+  ];
+
+  @override
   Widget build(BuildContext context) {
-    final initialLoading = ref.watch(initialLoadingProvider);
-    if (initialLoading) return const FullScreenLoader();
+    super.build(context);
 
-    final slideshowMovies = ref.watch(moviesSlideshowProvider);
-    final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
-    final popularMovies = ref.watch(popularMoviesProvider);
-    final upComingMovies = ref.watch(upComingMoviesProvider);
-    final topRatedMovies = ref.watch(topRatedMoviesProvider);
+    if (pageController.hasClients) {
+      pageController.animateToPage(
+        widget.pageIndex,
+        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 250),
+      );
+    }
 
-    return CustomScrollView(
-      slivers: [
-        const SliverAppBar(
-          floating: true,
-          title: CustomAppbar(),
-        ),
-        SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) {
-          return Column(
-            children: [
-              MoviesSlideshow(movies: slideshowMovies),
-              MovieHorizontalListview(
-                movies: nowPlayingMovies,
-                title: 'En cines',
-                subTitle: 'Lunes 20',
-                loadNextPage: () {
-                  ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-                },
-              ),
-              MovieHorizontalListview(
-                movies: upComingMovies,
-                title: 'Próximamente',
-                subTitle: 'En este mes',
-                loadNextPage: () {
-                  ref.read(upComingMoviesProvider.notifier).loadNextPage();
-                },
-              ),
-              MovieHorizontalListview(
-                movies: popularMovies,
-                title: 'Populares',
-                //subTitle: 'Lunes 20',
-                loadNextPage: () {
-                  ref.read(popularMoviesProvider.notifier).loadNextPage();
-                },
-              ),
-              MovieHorizontalListview(
-                movies: topRatedMovies,
-                title: 'Mejor calificadas',
-                subTitle: 'Desde siempre',
-                loadNextPage: () {
-                  ref.read(topRatedMoviesProvider.notifier).loadNextPage();
-                },
-              ),
-              const SizedBox(
-                height: 50,
-              )
-            ],
-          );
-        }, childCount: 1))
-      ],
+    return Scaffold(
+      body: PageView(
+        //* Esto evitará que rebote
+        physics: const NeverScrollableScrollPhysics(),
+        controller: pageController,
+        // index: pageIndex,
+        children: viewRoutes,
+      ),
+      bottomNavigationBar: CustomBottomNavigation(
+        currentIndex: widget.pageIndex,
+      ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
