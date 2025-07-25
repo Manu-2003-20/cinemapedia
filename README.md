@@ -5,16 +5,16 @@ Aplicación móvil desarrollada con Flutter que consume la API de TheMovieDB par
 ## 📱 Capturas de pantalla
 
 ### Pantalla de inicio
-![Inicio](assets/cinemapedia_5.JPG)
+![Inicio](assets/cinemapedia_5.jpg)
 
 ### Búsqueda de película
-![Búsqueda](assets/cinemapedia.JPG)
+![Búsqueda](assets/cinemapedia.jpg)
 
 ### Detalle de película
-![Detalle](assets/cinemapedia_4.JPG)
+![Detalle](assets/cinemapedia_4.jpg)
 
 ### Películas favoritas
-![Películas favoritas](assets/cinemapedia_2.JPG)
+![Películas favoritas](assets/cinemapedia_2.jpg)
 
 ### Películas populares
 ![Películas Populares](assets/cinemapedia_3.jpg)
